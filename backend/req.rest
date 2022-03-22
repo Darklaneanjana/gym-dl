@@ -1,0 +1,4 @@
+POST  localhost:5000/api/trainers/login
+
+###
+GET localhost:5000/api/trainers/login
