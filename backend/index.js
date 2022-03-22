@@ -13,15 +13,14 @@ app.use(express.static("./public"));
 const events = require("./routes/events.js");
 const trainers = require("./routes/trainers.js");
 const auth = require("./routes/auth.js");
-const { connect } = require("./routes/events.js");
 
 //test/////////////////////////////////////////////////////////////////////////////////////////////////
+const { connect } = require("./routes/events.js");
+const path = require("path");
 const jwt = require("jsonwebtoken");
 
-app.get("/t", (req, res) => {
-  // const token = jwt.sign({ _id: 12345, type: "T" }, process.env.TOKEN_SECRET);
-  res.setHeader("set-Cookie", "newUser=true");
-  res.send("dfdf");
+app.get("/tet", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/login.html"));
 });
 
 const verifyToken = require("./routes/verifyToken");

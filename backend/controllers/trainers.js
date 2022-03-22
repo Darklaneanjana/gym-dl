@@ -19,7 +19,9 @@ const loginTrainers = async (req, res) => {
     { _id: emailExist._id, type: "T" },
     process.env.TOKEN_SECRET
   );
-  res.header("auth-token", token).send(token);
+  res.cookie("jwt", token, { httpOnly: true });
+  // res.header("auth-token", token).send(token);
+  res.status(200).json({ success: true, token: token, user: emailExist._id });
 };
 
 const getTrainer = async (req, res) => {
