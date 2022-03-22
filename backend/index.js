@@ -6,21 +6,23 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-const verifyToken = require("./routes/verifyToken");
-
 app.use(express.static("./public"));
 const events = require("./routes/events.js");
 const trainers = require("./routes/trainers.js");
 const auth = require("./routes/auth.js");
 const { connect } = require("./routes/events.js");
 
-app.use("/api/events", events);
-app.use("/api/trainers", trainers);
-app.use("/api/auth", auth);
+// Testing
+const verifyToken = require("./routes/verifyToken");
 app.get("/test", verifyToken, (req, res) => {
   console.log(req.user);
   res.send("test");
 });
+//
+
+app.use("/api/events", events);
+app.use("/api/trainers", trainers);
+app.use("/api/auth", auth);
 app.use("*", (req, res) => res.status(404).json({ error: "Not Found" }));
 
 const uri = process.env.ATLAS_URI;
