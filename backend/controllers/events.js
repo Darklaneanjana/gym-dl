@@ -21,6 +21,20 @@ const getEvent = async (req, res) => {
 const getEvents = async (req, res) => {
   try {
     const event = await events.find();
+    /////////SEARCH EVENTS BY REGEX(ANYWHERE IN TITLE)//////////
+    if (req.query.search) {
+      var xt = new RegExp(req.query.search);
+      const newEvent = await events.find({ title: xt });
+      return res.status(200).json({ success: true, data: newEvent });
+    }
+    /////////SORT EVENTS BY TRAINER ID//////////
+    if (req.query.trainer) {
+      const newEvent = event.filter(
+        (event) => event.trainer == req.query.trainer
+      );
+      return res.status(200).json({ success: true, data: newEvent });
+    } /////////SEARCH EVENTS BY NAME//////////
+
     res.status(200).json({ success: true, data: event });
   } catch (err) {
     res.status(404).json({ success: false, msg: err });
@@ -35,6 +49,7 @@ const createEvents = async (req, res) => {
     details: req.body.details,
     gender: req.body.gender,
     date: req.body.date,
+    trainer: req.body.trainer,
   });
   try {
     const savedEvent = await event.save();

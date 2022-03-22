@@ -19,7 +19,7 @@ const loginTrainers = async (req, res) => {
     { _id: emailExist._id, type: "T" },
     process.env.TOKEN_SECRET
   );
-  res.cookie("jwt", token, { httpOnly: true });
+  res.cookie("jwt", token, { httpOnly: true, maxAge: 9999999 });
   // res.header("auth-token", token).send(token);
   res.status(200).json({ success: true, token: token, user: emailExist._id });
 };
@@ -37,7 +37,13 @@ const getTrainer = async (req, res) => {
 const getTrainers = async (req, res) => {
   try {
     const trainer = await trainers.find();
-    res.status(200).json({ success: true, data: trainer });
+    /////////SEARCH EVENTS BY REGEX(ANYWHERE IN USER NAME)//////////
+    if (req.query.search) {
+      var WC = new RegExp(req.query.search);
+      const newTrainer = await trainers.find({ uName: WC });
+      return res.status(200).json({ success: true, data: newTrainer });
+    }
+    return res.status(200).json({ success: true, data: trainer });
   } catch (err) {
     res.status(404).json({ success: false, msg: err });
   }

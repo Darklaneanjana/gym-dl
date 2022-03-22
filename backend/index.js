@@ -14,13 +14,22 @@ const events = require("./routes/events.js");
 const trainers = require("./routes/trainers.js");
 const auth = require("./routes/auth.js");
 
-//test/////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+app.get("/ll", (req, res) => {
+  console.log(req.query);
+  res.send(req.query);
+});
+//authontication test/////////////////////////////////////////////////////////////////////////////////////////////////
 const { connect } = require("./routes/events.js");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 
 app.get("/tet", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/login.html"));
+});
+app.get("/logout", (req, res) => {
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.redirect("/tet");
 });
 
 const verifyToken = require("./routes/verifyToken");
