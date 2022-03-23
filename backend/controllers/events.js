@@ -1,4 +1,6 @@
+const joi = require("@hapi/joi");
 let events = require("../models/events");
+const { eventValidation } = require("../models/validation");
 
 const searchEvents = async (req, res) => {
   console.log(req.params.id);
@@ -42,6 +44,11 @@ const getEvents = async (req, res) => {
 };
 
 const createEvents = async (req, res) => {
+  const { error } = eventValidation(req.body);
+  if (error)
+    return res
+      .status(400)
+      .json({ success: false, msg: error.details[0].message });
   const event = new events({
     title: req.body.title,
     tags: req.body.tags,
